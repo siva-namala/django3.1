@@ -4,4 +4,7 @@
 
 {% block body %}
 <h1>Hello welcome!</h1>
+    <p>Request: {{ request }}</p>
+    <p>User: {{ request.user }}</p>
+    <p>Path: {{ request.path }}</p>
 {% endblock %}
