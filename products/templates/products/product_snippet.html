@@ -1,13 +1,8 @@
-{% extends 'base.html' %}
-
-
-{% block body %}
+<div>
     <h1>{{ product.title }}</h1>
     {% if  product.content %}
         <p>{{ product.content }}</p>
     {% else %}
         <p>Content will be added soon...!</p>
     {% endif %}
-
-
-{% endblock body %}
+</div>
