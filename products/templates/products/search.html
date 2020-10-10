@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Search - {{ block.super }}
+{% endblock title %}
+
+
+{% block body %}
+    <h1>{{ msg }}</h1>
+    <p>Query param: {{ query }}</p>
+    {% if obj_list %}
+        {% for obj in obj_list %}
+        <h2>{{ obj.title }}</h2>
+        <p>{{ obj.content }}</p>
+        {% endfor %}
+    {% endif %}
+{% endblock body %}
