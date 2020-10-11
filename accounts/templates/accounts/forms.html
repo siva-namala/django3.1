@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ status }} - {{ block.super }}
+{% endblock title %}
+
+{% block body %}
+    <form method="post" action=".">
+    {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">{{ status }}</button>
+    </form>
+{% endblock body %}
