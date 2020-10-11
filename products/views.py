@@ -42,7 +42,7 @@ def product_create_view(request):
     form = ProductModelForm(request.POST or None)
     if form.is_valid():
         obj = form.save(commit=False)
-        # obj.user = request.user
+        obj.user = request.user  # saves with user
         obj.save()
         form = ProductModelForm()
         # return redirect('/products')
