@@ -1,3 +1,5 @@
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render
 
@@ -9,6 +11,7 @@ def home(request):
     return render(request, "products/home.html", {})
 
 
+@login_required
 def product_list_view(request):
     query_set = Product.objects.all()
     context = {"object_list": query_set}
@@ -34,6 +37,7 @@ def search_view(request):
     return render(request, 'products/search.html', context)
 
 
+@staff_member_required
 def product_create_view(request):
     form = ProductModelForm(request.POST or None)
     if form.is_valid():

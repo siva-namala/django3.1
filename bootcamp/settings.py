@@ -102,6 +102,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# custom login settings
+LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL = '/products'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
