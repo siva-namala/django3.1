@@ -41,5 +41,5 @@ class UserTestCase(TestCase):
 
         self.assertEqual(settings.LOGIN_URL, login_url)
         self.assertEqual(status_code, 200)
-        self.assertEqual(login_url, url)
+        self.assertEqual(settings.LOGIN_URL, url)
 
