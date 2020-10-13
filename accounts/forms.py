@@ -68,3 +68,14 @@ class LoginForm(forms.Form):
         if not qs.exists():
             raise forms.ValidationError("This is not valid user.")
         return username
+
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        username = self.cleaned_data.get('username')
+        user = User.objects.filter(username__iexact=username)
+        # print(user.exists())
+        # print(user.first())
+        if user.exists():
+            if not user.first().check_password(password):
+                raise forms.ValidationError("This is not valid password.")
+        return password
