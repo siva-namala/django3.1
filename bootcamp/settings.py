@@ -103,8 +103,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # custom login settings
-LOGIN_URL = '/login'
-LOGIN_REDIRECT_URL = '/products'
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/products/'
 
 
 # Internationalization

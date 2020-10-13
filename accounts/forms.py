@@ -73,6 +73,7 @@ class LoginForm(forms.Form):
         password = self.cleaned_data.get('password')
         username = self.cleaned_data.get('username')
         user = User.objects.filter(username__iexact=username)
+        # print(user)
         # print(user.exists())
         # print(user.first())
         if user.exists():
