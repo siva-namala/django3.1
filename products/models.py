@@ -8,8 +8,12 @@ User = settings.AUTH_USER_MODEL
 class Product(models.Model):
     title = models.CharField(max_length=65)
     content = models.TextField(null=True, blank=True)
-    price = models.IntegerField(default=0)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    inventory = models.IntegerField(default=0)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.title
+
+    def has_inventory(self):
+        return self.inventory > 0
