@@ -11,6 +11,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     inventory = models.IntegerField(default=0)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    featured = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
