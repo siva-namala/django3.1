@@ -27,6 +27,7 @@ class Order(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     paid = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     timestamp = models.DateTimeField(auto_now_add=True)
+    inventory_updated = models.BooleanField(default=False)
 
     def mark_paid(self, custom_amount=None, save=False):
         paid_amount = self.total
@@ -34,6 +35,9 @@ class Order(models.Model):
             paid_amount = custom_amount
         self.paid = paid_amount
         self.status = 'paid'
+        if not self.inventory_updated and self.product:
+            self.product.remove_items_from_inventory()
+            self.inventory_updated = True
         if save == True:
             self.save()
         return self.paid
