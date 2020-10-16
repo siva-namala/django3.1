@@ -28,6 +28,16 @@ class Order(models.Model):
     paid = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     timestamp = models.DateTimeField(auto_now_add=True)
 
+    def mark_paid(self, custom_amount=None, save=False):
+        paid_amount = self.total
+        if custom_amount != None:
+            paid_amount = custom_amount
+        self.paid = paid_amount
+        self.status = 'paid'
+        if save == True:
+            self.save()
+        return self.paid
+
     def calculate(self, save=False):
         if not self.product:
             return {}
