@@ -47,4 +47,4 @@ def product_create_view(request):
         form = ProductModelForm()
         # return redirect('/products')
     context = {"form": form}
-    return render(request, 'forms.html', context, status=201)
+    return render(request, 'checkout.html', context, status=201)

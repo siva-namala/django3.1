@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Checkout - {{ block.super }}
+{% endblock title %}
+
+{% block body %}
+    <form method="post" action=".">
+        {% csrf_token %}
+        {# form #}
+        {{ form.as_p }}
+
+        {# object #}
+        <p>
+            <b>Subtotal : {{ object.sub_total }}</b>
+        </p>
+        <p>
+            <b>Tax : {{ object.tax }}</b>
+        </p>
+        <p>
+            <b>Total : {{ object.total }}</b>
+        </p>
+
+        <button type="submit"> Complete Order</button>
+    </form>
+
+
+{% endblock body %}

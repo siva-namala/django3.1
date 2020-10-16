@@ -41,4 +41,4 @@ def order_check_out(request):
         order_obj.billing_address = form.cleaned_data['billing_address']
         order_obj.save()
 
-    return render(request, 'orders/forms.html', {"form": form})
+    return render(request, 'orders/checkout.html', {"form": form, "object": order_obj})
