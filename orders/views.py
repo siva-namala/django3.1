@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 
 from products.models import Product
 from .models import Order
+from .forms import OrderModelForm
 
 
 @login_required
@@ -31,6 +32,13 @@ def order_check_out(request):
     if (order_obj is not None) and (new_creation is False):
         if order_obj.product.id != product.id:
             order_obj = Order.objects.create(user=user, product=product)
-
     request.session['order_id'] = order_obj.id
-    return render(request, 'orders/forms.html', {})
+
+    # forms
+    form = OrderModelForm(request.POST or None, product=product, instance=order_obj)
+    if form.is_valid():
+        order_obj.shipping_address = form.cleaned_data['shipping_address']
+        order_obj.billing_address = form.cleaned_data['billing_address']
+        order_obj.save()
+
+    return render(request, 'orders/forms.html', {"form": form})
