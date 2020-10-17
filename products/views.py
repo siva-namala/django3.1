@@ -43,7 +43,8 @@ def product_create_view(request):
     if form.is_valid():
         obj = form.save(commit=False)
         obj.user = request.user  # saves with user
-        obj.image = request.FILES['image']
+        obj.image = request.FILES.get('image')
+        obj.protected_media = request.FILES.get('protected_media')
         obj.save()
         form = ProductModelForm()
         # return redirect('/products')

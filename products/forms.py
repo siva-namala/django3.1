@@ -7,7 +7,7 @@ class ProductModelForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = [
-            'title', 'content', 'image'
+            'title', 'content', 'image', 'protected_media'
         ]
 
     def clean_title(self):
