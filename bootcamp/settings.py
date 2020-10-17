@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'sjda^vq5j#p=!j+iz15g@%o&@2)yp4_t!65bu8*xx7l)$$f@n3'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -58,7 +56,7 @@ ROOT_URLCONF = 'bootcamp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR/"templates", ],
+        'DIRS': [BASE_DIR / "templates", ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -73,7 +71,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bootcamp.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
@@ -83,7 +80,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -107,7 +103,6 @@ AUTH_PASSWORD_VALIDATORS = [
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/products/'
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -121,8 +116,23 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+# for internal
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "staticfiles",  # ~os.path.join(str(BASE_DIR), "staticfiles")
+]
+
+MEDIA_URL = '/media/'
+
+# for production or external (S3 server)
+STATIC_ROOT = BASE_DIR / "cdn_test" / "static"
+MEDIA_ROOT = BASE_DIR / "cdn_test" / "media"
+PROTECTED_MEDIA = BASE_DIR / "cdn_test" / "protected"
+
+if DEBUG:
+    STATIC_ROOT.mkdir(parents=True, exist_ok=True)  # ~os.mkdir()
+    MEDIA_ROOT.mkdir(parents=True, exist_ok=True)
+    PROTECTED_MEDIA.mkdir(parents=True, exist_ok=True)

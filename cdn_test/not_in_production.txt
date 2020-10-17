@@ -1,0 +1,1 @@
+This folder to check how files store in AWS S3 or Cloudfront
