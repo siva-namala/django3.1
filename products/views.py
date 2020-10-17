@@ -39,12 +39,13 @@ def search_view(request):
 
 @staff_member_required
 def product_create_view(request):
-    form = ProductModelForm(request.POST or None)
+    form = ProductModelForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         obj = form.save(commit=False)
         obj.user = request.user  # saves with user
+        obj.image = request.FILES['image']
         obj.save()
         form = ProductModelForm()
         # return redirect('/products')
     context = {"form": form}
-    return render(request, 'checkout.html', context, status=201)
+    return render(request, 'forms.html', context, status=201)
