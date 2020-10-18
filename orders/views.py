@@ -1,4 +1,9 @@
+import pathlib
+
+from mimetypes import guess_type
+from wsgiref.util import FileWrapper
 from django.contrib.auth.decorators import login_required
+from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect
 
 from products.models import Product
@@ -45,3 +50,32 @@ def order_check_out(request):
         return redirect('/success')
 
     return render(request, 'orders/checkout.html', {"form": form, "object": order_obj})
+
+
+@login_required
+def download_order(request, *args, **kwargs):
+    order_id = 'abc'
+    qs = Product.objects.filter(protected_media__isnull=False)
+    product_obj = qs.first()
+    pk = product_obj.id
+    media = product_obj.protected_media
+    if not media:
+        raise Http404
+    product_path = media.path
+    path = pathlib.Path(product_path)  # os.path
+    print(type(path))
+    ext = path.suffix   # .csv, .png, .jpg
+    fname = f"protected-product-{order_id}-{pk}{ext}"
+    if not path.exists():
+        raise Http404
+    with open(path, 'rb') as f:
+        wrapper = FileWrapper(f)
+        content_type = 'application/force-download'
+        guessed_ = guess_type(str(path))[0]
+        if guessed_:
+            content_type = guessed_
+        response = HttpResponse(wrapper, content_type=content_type)
+        response['Content-Disposition'] = f"attachment;filename={fname}"
+        response['X-SendFile'] = f'{fname}'
+        return response
+
