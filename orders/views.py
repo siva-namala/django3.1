@@ -13,10 +13,21 @@ from .forms import OrderModelForm
 
 @login_required
 def order_check_out(request):
-    qs = Product.objects.filter(featured=True)
-    if not qs.exists():
-        return redirect('/products/')
-    product = qs.first()
+    product_id = request.session.get('product_id') or None
+    if product_id is None:
+        return redirect('/')
+    product = None
+    try:
+        product = Product.objects.get(id=product_id)
+    except Product.DoesNotExist:
+        # message.success()
+        return redirect('/')
+
+    # qs = Product.objects.filter(featured=True)
+    # if not qs.exists():
+    #     return redirect('/products/')
+    # product = qs.first()
+
     user = request.user
 
     # to stop creating more order objects for same product at same session
@@ -26,6 +37,9 @@ def order_check_out(request):
 
     try:
         order_obj = Order.objects.get(id=order_id)
+        # if price of product updated, add new price to existing order_obj
+        order_obj.product.price = product.price
+        order_obj.save()
     except Order.DoesNotExist:
         order_id = None
     if order_id is None:
@@ -33,7 +47,7 @@ def order_check_out(request):
         order_obj = Order.objects.create(user=user, product=product)
         request.session['order_id'] = order_obj.id
 
-    # if created order have different product than required product, we create again
+    # if created order have different product than required product, we create new order
     if (order_obj is not None) and (new_creation is False):
         if order_obj.product.id != product.id:
             order_obj = Order.objects.create(user=user, product=product)
@@ -63,8 +77,7 @@ def download_order(request, *args, **kwargs):
         raise Http404
     product_path = media.path
     path = pathlib.Path(product_path)  # os.path
-    print(type(path))
-    ext = path.suffix   # .csv, .png, .jpg
+    ext = path.suffix  # .csv, .png, .jpg
     fname = f"protected-product-{order_id}-{pk}{ext}"
     if not path.exists():
         raise Http404
@@ -76,6 +89,5 @@ def download_order(request, *args, **kwargs):
             content_type = guessed_
         response = HttpResponse(wrapper, content_type=content_type)
         response['Content-Disposition'] = f"attachment;filename={fname}"
-        response['X-SendFile'] = f'{fname}'
+        response['X-SendFile'] = f"{fname}"
         return response
-

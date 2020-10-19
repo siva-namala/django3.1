@@ -14,7 +14,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            return redirect('/products')
+            return redirect('/')
         else:
             request.session['invalid_user'] = 1
 
@@ -43,7 +43,7 @@ def register_view(request):
             user = None
         if user:
             login(request, user)
-            return redirect('/products')
+            return redirect('/')
         else:
             request.session['register_error'] = 1
 

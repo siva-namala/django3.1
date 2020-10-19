@@ -16,12 +16,20 @@ class Product(models.Model):
     inventory = models.IntegerField(default=0)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     featured = models.BooleanField(default=False)
+    can_backorder = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
 
     def has_inventory(self):
         return self.inventory > 0
+
+    def can_order(self):
+        if self.has_inventory():
+            return True
+        elif self.can_backorder:
+            return True
+        return False
 
     def remove_items_from_inventory(self, count=1, save=True):
         current_inv = self.inventory

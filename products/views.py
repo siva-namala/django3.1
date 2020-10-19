@@ -50,3 +50,20 @@ def product_create_view(request):
         # return redirect('/products')
     context = {"form": form}
     return render(request, 'forms.html', context, status=201)
+
+
+def featured_product(request):
+    qs = Product.objects.filter(featured=True)
+    product = None
+    if qs.exists():
+        product = qs.first()
+    # add product id to session for checkout page
+    if product:
+        if product.can_order():
+            request.session['product_id'] = product.id
+
+    context = {
+        "form": None,
+        "product": product
+    }
+    return render(request, 'products/featured.html', context)

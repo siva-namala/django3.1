@@ -31,7 +31,7 @@ class Order(models.Model):
 
     def mark_paid(self, custom_amount=None, save=False):
         paid_amount = self.total
-        if custom_amount != None:
+        if custom_amount is not None:
             paid_amount = custom_amount
         self.paid = paid_amount
         self.status = 'paid'
