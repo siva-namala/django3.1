@@ -63,7 +63,13 @@ def order_check_out(request):
         del request.session['order_id']
         return redirect('/success')
 
-    return render(request, 'orders/checkout.html', {"form": form, "object": order_obj})
+    context = {
+        "form": form,
+        "object": order_obj,
+        "is_digital": product.is_digital
+    }
+
+    return render(request, 'orders/checkout.html', context)
 
 
 @login_required

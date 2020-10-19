@@ -24,12 +24,17 @@ class Product(models.Model):
     def has_inventory(self):
         return self.inventory > 0
 
+    @property
     def can_order(self):
         if self.has_inventory():
             return True
         elif self.can_backorder:
             return True
         return False
+
+    @property
+    def is_digital(self):
+        return self.protected_media is not None
 
     def remove_items_from_inventory(self, count=1, save=True):
         current_inv = self.inventory
