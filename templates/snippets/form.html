@@ -1,0 +1,11 @@
+<form method="post" action="." enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">
+        {% if submit_btn %}
+            {{ submit_btn }}
+        {% else %}
+            Submit
+        {% endif %}
+    </button>
+</form>

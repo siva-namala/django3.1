@@ -1,9 +1,0 @@
-{% extends 'base.html' %}
-
-{% block title %}
-    {{ object.title }} - {{ block.super }}
-{% endblock title %}
-
-{% block body %}
-    {% include 'products/product_snippet.html' with product=object %}
-{% endblock body %}

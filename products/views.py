@@ -1,8 +1,9 @@
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
+from emails.forms import InventoryWailistForm
 from .models import Product
 from .forms import ProductModelForm
 
@@ -24,7 +25,7 @@ def product_detail_view(request, pk):
     except Product.DoesNotExist:
         raise Http404
     context = {"object": obj}
-    return render(request, "products/product_detail.html", context)
+    return render(request, "products/detail_in_productsapp.html", context)
 
 
 def search_view(request):
@@ -49,7 +50,7 @@ def product_create_view(request):
         form = ProductModelForm()
         # return redirect('/products')
     context = {"form": form}
-    return render(request, 'forms.html', context, status=201)
+    return render(request, 'form.html', context, status=201)
 
 
 def featured_product(request):
@@ -59,11 +60,22 @@ def featured_product(request):
         product = qs.first()
     # add product id to session for checkout page
     if product:
-        if product.can_order():
+        if product.can_order:   # can_order method is property
             request.session['product_id'] = product.id
 
+    # form
+    form = InventoryWailistForm(request.POST or None, product=product)
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.product = product
+        if request.user.is_authenticated:
+            obj.user = request.user
+        obj.save()
+        return redirect("/waitlist-success")
+
     context = {
-        "form": None,
-        "product": product
+        "form": form,
+        "object": product,
+        "can_order": product.can_order
     }
-    return render(request, 'products/featured.html', context)
+    return render(request, 'products/detail_in_productsapp.html', context)

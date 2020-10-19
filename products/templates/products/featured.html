@@ -1,18 +1,13 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    {% if product %}
+    {% if product.can_order %}
         <h1>{{ product.title }}</h1>
-        {% if product.image %}{{ product.image }}{% endif %}
-        {# <img src="{{ product.image.url }}">#}
+        {% if product.image %}<img src="{{ product.image.url }}">{% endif %}
         <p>{{ product.content }}</p>
+        <a href="/checkout/">{{ product.price }} Purchase</a>
 
-        {% if product.can_order %}
-            <a href="/checkout/">{{ product.price }} Purchase</a>
-        {% else %}
-            <p>Out of Stock</p>
-        {% endif %}
     {% else %}
-
+        {% include 'snippets/form.html' with form=form submit_btn='Add to waitlist' %}
     {% endif %}
 {% endblock body %}

@@ -1,12 +1,12 @@
 from decimal import Decimal
 
 from django.db import models
-from django.contrib.auth import get_user_model
+from django.conf import settings
 from django.db.models.signals import pre_save
 
 from products.models import Product
 
-User = get_user_model()
+User = settings.AUTH_USER_MODEL
 ORDER_STATUS_CHOICES = (
     ('created', 'Created'),
     ('stale', 'Stale'),

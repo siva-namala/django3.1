@@ -5,9 +5,5 @@
 {% endblock title %}
 
 {% block body %}
-    <form method="post" action="." enctype="multipart/form-data">
-    {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Create Product</button>
-    </form>
+    {% include 'snippets/form.html' with form=form %}
 {% endblock body %}

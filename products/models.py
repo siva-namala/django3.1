@@ -12,6 +12,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to='products/', null=True, blank=True)
     protected_media = models.FileField(upload_to='p_products/', storage=ProtectedStorage,
                                        null=True, blank=True)
+    video_link = models.TextField(null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     inventory = models.IntegerField(default=0)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
@@ -31,6 +32,14 @@ class Product(models.Model):
         elif self.can_backorder:
             return True
         return False
+
+    @property
+    def order_btn_title(self):
+        if self.can_order and not self.has_inventory():
+            return "Backorder"
+        if not self.can_order:
+            return "Cannot purchase"
+        return "Purchase"
 
     @property
     def is_digital(self):

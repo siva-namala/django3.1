@@ -5,24 +5,16 @@
 {% endblock title %}
 
 {% block body %}
-    <form method="post" action=".">
-        {% csrf_token %}
-        {# form #}
-        {{ form.as_p }}
+    <p>
+        <b>Subtotal : {{ object.sub_total }}</b>
+    </p>
+    <p>
+        <b>Tax : {{ object.tax }}</b>
+    </p>
+    <p>
+        <b>Total : {{ object.total }}</b>
+    </p>
 
-        {# object #}
-        <p>
-            <b>Subtotal : {{ object.sub_total }}</b>
-        </p>
-        <p>
-            <b>Tax : {{ object.tax }}</b>
-        </p>
-        <p>
-            <b>Total : {{ object.total }}</b>
-        </p>
-
-        <button type="submit"> Complete Order</button>
-    </form>
-
+    {% include 'snippets/form.html' with form=form submit_btn='Complete order'%}
 
 {% endblock body %}
