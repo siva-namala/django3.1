@@ -18,6 +18,7 @@ class Product(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     featured = models.BooleanField(default=False)
     can_backorder = models.BooleanField(default=False)
+    requires_shipping = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
