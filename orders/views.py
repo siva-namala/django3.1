@@ -61,6 +61,7 @@ def order_check_out(request):
         order_obj.mark_paid(save=False)
         order_obj.save()
         del request.session['order_id']
+        request.session['checkout_success_order_id'] = order_obj.id
         return redirect('/success')
 
     context = {
@@ -70,6 +71,12 @@ def order_check_out(request):
     }
 
     return render(request, 'orders/checkout.html', context)
+
+
+@login_required()
+def my_orders_view(request):
+    qs = Order.objects.filter(status='paid', user=request.user).order_by('-id')
+    return render(request, 'orders/my_orders.html', {'object_list': qs})
 
 
 @login_required

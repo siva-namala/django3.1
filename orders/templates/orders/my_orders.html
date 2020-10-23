@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    {% for object in object_list %}
+
+            <h2>Product : {{ object.product.title }}</h2>
+
+            <p>
+                <b>Subtotal : {{ object.sub_total }}</b>
+            </p>
+            <p>
+                <b>Tax : {{ object.tax }}</b>
+            </p>
+            <p>
+                <b>Total : {{ object.total }}</b>
+            </p>
+            <p>
+                <b>Status : {{ object.status }}</b>
+            </p> <br>
+
+    {% endfor %}
+{% endblock body %}

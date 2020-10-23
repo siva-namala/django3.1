@@ -1,0 +1,5 @@
+{% if  product.content %}
+        <p>{{ product.content | safe | escape }}</p>  {# for html content #}
+    {% else %}
+        <p>Content will be added soon...!</p>
+    {% endif %}

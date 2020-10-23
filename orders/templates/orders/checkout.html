@@ -5,16 +5,28 @@
 {% endblock title %}
 
 {% block body %}
-    <p>
-        <b>Subtotal : {{ object.sub_total }}</b>
-    </p>
-    <p>
-        <b>Tax : {{ object.tax }}</b>
-    </p>
-    <p>
-        <b>Total : {{ object.total }}</b>
-    </p>
 
-    {% include 'snippets/form.html' with form=form submit_btn='Complete order'%}
+    <div class=""row>
+        <div class="col-sm-3 ">
+            <p>
+            <b>Product : {{ object.product.title }}</b>
+            </p>
+            <p>
+            <b>Subtotal : {{ object.sub_total }}</b>
+            </p>
+            <p>
+                <b>Tax : {{ object.tax }}</b>
+            </p>
+            <p>
+                <b>Total : {{ object.total }}</b>
+            </p>
+        </div>
+
+        <div class="col-sm-9  pull-right">
+            <h3>{{ object.product.title }} <small>{{ object.product.price }}</small></h3>
+            {% include 'snippets/form.html' with form=form submit_btn='Complete order' btn_class='btn btn-primary' %}
+        </div>
+
+    </div>
 
 {% endblock body %}
