@@ -19,6 +19,7 @@ class Product(models.Model):
     featured = models.BooleanField(default=False)
     can_backorder = models.BooleanField(default=False)
     requires_shipping = models.BooleanField(default=False)
+    is_digital = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
@@ -41,10 +42,6 @@ class Product(models.Model):
         if not self.can_order:
             return "Cannot purchase"
         return "Purchase"
-
-    @property
-    def is_digital(self):
-        return self.protected_media is not None
 
     def remove_items_from_inventory(self, count=1, save=True):
         current_inv = self.inventory

@@ -2,7 +2,6 @@
 
 {% block body %}
     {% for object in object_list %}
-
             <h2>Product : {{ object.product.title }}</h2>
 
             <p>
@@ -16,7 +15,12 @@
             </p>
             <p>
                 <b>Status : {{ object.status }}</b>
-            </p> <br>
+            </p>
+            {% if object.is_downloadable %}
+                <a class="btn btn-success" href="{{ object.get_download_url }}">Download</a>
+            {% endif %}
+
+        <br>
 
     {% endfor %}
 {% endblock body %}

@@ -80,14 +80,22 @@ def my_orders_view(request):
 
 
 @login_required
-def download_order(request, *args, **kwargs):
-    order_id = 'abc'
-    qs = Product.objects.filter(protected_media__isnull=False)
-    product_obj = qs.first()
+def download_order(request, order_id=None, *args, **kwargs):
+    """Download private media if exists."""
+    if order_id is None:
+        return redirect('/orders')
+    # qs = Product.objects.filter(protected_media__isnull=False)
+    qs = Order.objects.filter(id=order_id, user=request.user, status='paid',
+                              product__protected_media__isnull=False)
+    if not qs.exists():
+        return redirect('/orders')
+    order_obj = qs.first()
+    product_obj = order_obj.product
     pk = product_obj.id
     media = product_obj.protected_media
     if not media:
-        raise Http404
+        # raise Http404
+        return redirect('/orders')
     product_path = media.path
     path = pathlib.Path(product_path)  # os.path
     ext = path.suffix  # .csv, .png, .jpg
